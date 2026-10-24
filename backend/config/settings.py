@@ -2,11 +2,34 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-only-change-this-key")
-DEBUG = os.environ.get("DJANGO_DEBUG", "False").lower() == "true"
-ALLOWED_HOSTS = [h.strip() for h in os.environ.get(
-    "DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1"
-).split(",") if h.strip()]
+
+import os
+
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "dev-only-change-this-key"
+)
+
+DEBUG = os.environ.get(
+    "DJANGO_DEBUG", "False"
+).lower() == "true"
+
+ALLOWED_HOSTS = [
+    h.strip()
+    for h in os.environ.get(
+        "DJANGO_ALLOWED_HOSTS",
+        "localhost,127.0.0.1,react-django-todo.onrender.com"
+    ).split(",")
+    if h.strip()
+]
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get(
+    "RENDER_EXTERNAL_HOSTNAME"
+)
+
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
